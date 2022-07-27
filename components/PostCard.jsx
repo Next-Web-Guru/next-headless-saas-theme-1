@@ -17,24 +17,26 @@ const PostCard = ({ post }) => (
         src={post.featuredImage.url}
       />
     </div> */}
-    <div className="relative overflow-hidden shadow-md pb-80 mb-6">
-      <img src={post.featuredImage.url} alt="" className="object-top absolute h-80 w-full object-cover  shadow-lg rounded-t-lg lg:rounded-lg" />
+    <div className="relative overflow-hidden shadow-md mb-6">
+      {/* <img src={post.featuredImage.node.sourceUrl} alt={post.title} className="object-top absolute h-80 w-full object-cover  shadow-lg rounded-t-lg lg:rounded-lg" /> */}
+      <Image priority src={post.featuredImage.node.sourceUrl} width={320} height={180} layout="responsive" alt={post.title} className="object-top absolute h-80 w-full object-cover  shadow-lg rounded-t-lg lg:rounded-lg" />
     </div>
+
 
     <h1 className="transition duration-700 text-center mb-8 cursor-pointer hover:text-pink-600 text-3xl font-semibold">
       <Link href={`/post/${post.slug}`}>{post.title}</Link>
     </h1>
     <div className="block lg:flex text-center items-center justify-center mb-8 w-full">
       <div className="flex items-center justify-center mb-4 lg:mb-0 w-full lg:w-auto mr-8 items-center">
-        <Image
+        {/* <Image
           unoptimized
           loader={grpahCMSImageLoader}
           alt={post.author.name}
           height="30px"
           width="30px"
           className="align-middle rounded-full"
-          src={post.author.photo.url}
-        />
+          src={post.author.node.avatar}
+        /> */}
         <p className="inline align-middle text-gray-700 ml-2 font-medium text-lg">{post.author.name}</p>
       </div>
       <div className="font-medium text-gray-700">
@@ -44,11 +46,10 @@ const PostCard = ({ post }) => (
         <span className="align-middle">{moment(post.createdAt).format('MMM DD, YYYY')}</span>
       </div>
     </div>
-    <p className="text-center text-lg text-gray-700 font-normal px-4 lg:px-20 mb-8">
-      {post.excerpt}
-    </p>
-    <div className="text-center">
-      <Link href={`/post/${post.slug}`}>
+    <div className="text-center text-lg text-gray-700 font-normal px-4 lg:px-20 mb-8" dangerouslySetInnerHTML={{ __html:post.excerpt}}>
+    </div>
+    <div className="text-center" style={{textAlign:'center'}}>
+      <Link href={`${post.uri}`}>
         <span className="transition duration-500 ease transform hover:-translate-y-1 inline-block bg-pink-600 text-lg font-medium rounded-full text-white px-8 py-3 cursor-pointer">Continue Reading</span>
       </Link>
     </div>
