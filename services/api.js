@@ -232,7 +232,7 @@ export async function getCateogryRecentPostbyName(typeName, categoryName) {
   const data = await fetchAPI(
     `
     query CategoryPostbyName($categoryName: String! ="") {
-  posts(where: {${typeName}: $categoryName }, first: 21) {
+  posts(where: {${typeName}: $categoryName }, first: 10) {
     pageInfo {
       seo {
         schema {

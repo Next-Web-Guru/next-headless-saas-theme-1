@@ -1,6 +1,8 @@
 //import { VStack } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { Loader } from "../components";
+import PostList from "../components/archives/PostList";
+import PageData from "../components/PageData";
 //import PostList from "../components/archives/post-list";
 //import Footer from "../components/layout/footer";
 //import Header from "../components/layout/header";
@@ -21,7 +23,7 @@ function OtherPages(props) {
         return (<Loader />)
     }
     else {
-        //console.log(props)
+        console.log(props)
 
         const urlType = props.urlType
         const pageType = props.pageType

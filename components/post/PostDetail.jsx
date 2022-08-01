@@ -75,7 +75,7 @@ const PostDetail = ({ data }) => {
             </div>
           </div>
           <h1 className="mb-8 text-3xl font-semibold">{data.title}</h1>
-          <div className={`${ClassesPostBody.content} contentBody`} dangerouslySetInnerHTML={{ __html: data.content }} />
+          <div className={`${ClassesPostBody.content} contentBody break-all`} dangerouslySetInnerHTML={{ __html: data.content }} />
         </div>
       </div>
 

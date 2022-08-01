@@ -24,7 +24,7 @@ const PostCard = ({ post }) => (
 
 
     <h1 className="transition duration-700 text-center mb-8 cursor-pointer hover:text-pink-600 text-3xl font-semibold">
-      <Link href={`/post/${post.slug}`}>{post.title}</Link>
+      <Link href={`${post.uri}`}>{post.title}</Link>
     </h1>
     <div className="block lg:flex text-center items-center justify-center mb-8 w-full">
       <div className="flex items-center justify-center mb-4 lg:mb-0 w-full lg:w-auto mr-8 items-center">
@@ -46,7 +46,7 @@ const PostCard = ({ post }) => (
         <span className="align-middle">{moment(post.createdAt).format('MMM DD, YYYY')}</span>
       </div>
     </div>
-    <div className="text-center text-lg text-gray-700 font-normal px-4 lg:px-20 mb-8" dangerouslySetInnerHTML={{ __html:post.excerpt}}>
+    <div className="text-center text-lg text-gray-700 font-normal px-4 lg:px-20 mb-8 break-all" dangerouslySetInnerHTML={{ __html:post.excerpt}}>
     </div>
     <div className="text-center" style={{textAlign:'center'}}>
       <Link href={`${post.uri}`}>
