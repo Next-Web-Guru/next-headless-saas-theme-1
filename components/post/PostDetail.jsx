@@ -1,14 +1,68 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import moment from "moment";
 import ClassesPostBody from "../../styles/post-body.module.css";
 import Image from "next/image";
+import { getNWGCustomAdvertisement } from "../../services/api";
 
 const PostDetail = ({ data }) => {
   const author = data.author.node;
   const date = new Date(data.date);
   const imagePath = data.featuredImage.node.sourceUrl;
   const tags = data.tags.edges;
+  //const [postData, setPostData] = useState(data.content);
+
+  useEffect(() => {
+    FetchAdvertimsnetData();
+  }, []);
+
+  async function FetchAdvertimsnetData() {
+    const NwgCustomAdvertisement = await getNWGCustomAdvertisement();
+    console.log("advertisment = ", NwgCustomAdvertisement);
+
+    NwgCustomAdvertisement.allNWGCustomAdvertisement.nodes.map((ad, index) => {
+      const whereToShow = ad.whereToShow[0];
+      const adBanner = ad.adBanner;
+      const adLink = ad.adLink;
+      const adName = ad.adName;
+      const atWhichNumber = ad.atWhichNumber;
+
+      let adHtml =
+        '<p><a href="' +
+        adLink +
+        '" target="_blank" rel="noopener"><img class="aligncenter wp-image-33459 size-full" src="' +
+        adBanner.mediaItemUrl +
+        '" alt="' +
+        adName +
+        '" width="' +
+        adBanner.mediaDetails.width +
+        '" height="' +
+        adBanner.mediaDetails.height +
+        '" /></a></p>';
+
+      let contentBody = document.querySelector(".contentBody");
+
+      switch (whereToShow) {
+        case "afterHeading2":
+          let find1 = contentBody.querySelectorAll("h2")[atWhichNumber - 1];
+          if (find1) {
+            let adDiv1 = document.createElement("div");
+            adDiv1.innerHTML = adHtml;
+            find1.appendChild(adDiv1);
+          }
+          break;
+
+        case "afterParagraph":
+          let find2 = contentBody.querySelectorAll("h2")[atWhichNumber - 1];
+          if (find2) {
+            let adDiv2 = document.createElement("div");
+            adDiv2.innerHTML = adHtml;
+            find2.appendChild(adDiv2);
+          }
+          break;
+      }
+    });
+  }
 
   // const getContentFragment = (index, text, obj, type) => {
   //   let modifiedText = text;

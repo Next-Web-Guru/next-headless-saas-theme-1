@@ -1,5 +1,6 @@
 const withPWA = require("next-pwa");
 const withPlugins = require("next-compose-plugins");
+
 const nextConfig = {
   //reactStrictMode: true,
   env: {
@@ -12,6 +13,7 @@ const nextConfig = {
   },
   images: {
     domains: [
+      "babacric.in",
       "i0.wp.com",
       "secure.gravatar.com",
       "babacricnews.s3.ap-south-1.amazonaws.com",
