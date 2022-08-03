@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import moment from "moment";
 import ClassesPostBody from "../../styles/post-body.module.css";
+import blurImage from "../../public/blur.webp";
 
 import { getNWGCustomAdvertisement } from "../../services/api";
 //import Image from "next/image";
@@ -117,7 +118,7 @@ const PostDetail = ({ data }) => {
             layout="responsive"
             className="object-top h-full w-full object-cover  shadow-lg rounded-t-lg lg:rounded-lg"
             placeholder="blur"
-            blurDataURL={imagePath}
+            blurDataURL={blurImage}
             priority={true}
           />
         </div>
