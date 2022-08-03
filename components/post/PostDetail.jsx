@@ -118,6 +118,7 @@ const PostDetail = ({ data }) => {
             className="object-top h-full w-full object-cover  shadow-lg rounded-t-lg lg:rounded-lg"
             placeholder="blur"
             blurDataURL={imagePath}
+            priority={true}
           />
         </div>
         <div className="px-4 lg:px-0">
