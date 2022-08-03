@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import moment from "moment";
 import ClassesPostBody from "../../styles/post-body.module.css";
+import blurImage from "./blur-min.jpg";
 
 import { getNWGCustomAdvertisement } from "../../services/api";
 //import Image from "next/image";
@@ -66,6 +67,25 @@ const PostDetail = ({ data }) => {
     });
   }
 
+  const convertImage = (w, h) => `
+  <svg width="${w}" height="${h}" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <defs>
+      <linearGradient id="g">
+        <stop stop-color="#333" offset="20%" />
+        <stop stop-color="#222" offset="50%" />
+        <stop stop-color="#333" offset="70%" />
+      </linearGradient>
+    </defs>
+    <rect width="${w}" height="${h}" fill="#333" />
+    <rect id="r" width="${w}" height="${h}" fill="url(#g)" />
+    <animate xlink:href="#r" attributeName="x" from="-${w}" to="${w}" dur="1s" repeatCount="indefinite"  />
+  </svg>`;
+
+  const toBase64 = (str) =>
+    typeof window === "undefined"
+      ? Buffer.from(str).toString("base64")
+      : window.btoa(str);
+
   // const getContentFragment = (index, text, obj, type) => {
   //   let modifiedText = text;
 
@@ -117,7 +137,11 @@ const PostDetail = ({ data }) => {
             layout="responsive"
             className="object-top h-full w-full object-cover  shadow-lg rounded-t-lg lg:rounded-lg"
             placeholder="blur"
-            blurDataURL="https://babacricnews.s3.ap-south-1.amazonaws.com/wp-content/uploads/2022/08/03193518/blur-min.jpg"
+            //blurDataURL="https://babacricnews.s3.ap-south-1.amazonaws.com/wp-content/uploads/2022/08/03193518/blur-min.jpg"
+            //blurDataURL={blurImage}
+            blurDataURL={`data:image/svg+xml;base64,${toBase64(
+              convertImage(700, 475)
+            )}`}
             // priority={true}
           />
         </div>
