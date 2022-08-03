@@ -28,6 +28,7 @@ const PostCard = ({ post }) => (
         alt={post.title}
         className="object-top absolute h-80 w-full object-cover  shadow-lg rounded-t-lg lg:rounded-lg"
         placeholder="blur"
+        blurDataURL={post.featuredImage.node.sourceUrl}
       />
     </div>
 

@@ -49,6 +49,7 @@ const Header = () => {
                   width={128}
                   height={27.75}
                   placeholder="blur"
+                  blurDataURL="https://babacricnews.s3.ap-south-1.amazonaws.com/wp-content/uploads/2021/05/07112007/baba-logo-white.png"
                 />
               </span>
             </Link>

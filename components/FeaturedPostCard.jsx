@@ -26,6 +26,7 @@ const FeaturedPostCard = ({ post }) => (
           className="align-middle drop-shadow-lg rounded-full"
           src={post.author.photo.url}
           placeholder="blur"
+          blurDataURL={post.author.photo.url}
         />
         <p className="inline align-middle text-white text-shadow ml-2 font-medium">
           {post.author.name}

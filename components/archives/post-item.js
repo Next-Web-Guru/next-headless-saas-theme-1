@@ -24,6 +24,7 @@ function PostItem({ post }) {
             layout="responsive"
             alt={title}
             placeholder="blur"
+            blurDataURL={imagePath}
           />
 
           <Box p="4">

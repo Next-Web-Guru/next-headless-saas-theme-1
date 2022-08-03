@@ -15,6 +15,7 @@ const Footer = () => {
                   width={128}
                   height={27.75}
                   placeholder="blur"
+                  blurDataURL="https://babacricnews.s3.ap-south-1.amazonaws.com/wp-content/uploads/2021/05/07112004/baba-logo-wide.png"
                 />
               </Link>
             </div>

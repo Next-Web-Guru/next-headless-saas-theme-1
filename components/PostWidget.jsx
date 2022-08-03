@@ -38,6 +38,7 @@ const PostWidget = ({ categories, slug }) => {
               className="align-middle rounded-full"
               src={post.featuredImage.url}
               placeholder="blur"
+              blurDataURL={post.featuredImage.url}
             />
           </div>
           <div className="flex-grow ml-4">
