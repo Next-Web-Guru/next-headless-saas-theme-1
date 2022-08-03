@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import moment from "moment";
 import ClassesPostBody from "../../styles/post-body.module.css";
-import blurImage from "../../public/blur.webp";
 
 import { getNWGCustomAdvertisement } from "../../services/api";
 //import Image from "next/image";
@@ -118,8 +117,8 @@ const PostDetail = ({ data }) => {
             layout="responsive"
             className="object-top h-full w-full object-cover  shadow-lg rounded-t-lg lg:rounded-lg"
             placeholder="blur"
-            blurDataURL={blurImage}
-            priority={true}
+            blurDataURL="https://babacricnews.s3.ap-south-1.amazonaws.com/wp-content/uploads/2022/08/03193518/blur-min.jpg"
+            // priority={true}
           />
         </div>
         <div className="px-4 lg:px-0">
