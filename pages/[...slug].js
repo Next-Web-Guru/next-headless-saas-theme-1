@@ -7,7 +7,7 @@ import PageData from "../components/PageData";
 //import Footer from "../components/layout/footer";
 //import Header from "../components/layout/header";
 //import PageData from "../components/page/page-data";
-import Post from "../components/post/post";
+import Post from "../components/post/Post";
 import {
   getCateogryRecentPostbyName,
   getHeaderMenuByName,
