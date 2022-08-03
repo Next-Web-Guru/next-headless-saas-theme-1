@@ -1,5 +1,5 @@
-import React from 'react';
-import Image from 'next/image';
+import React from "react";
+import Image from "next/image";
 
 //import { grpahCMSImageLoader } from '../../util';
 
@@ -13,6 +13,7 @@ const Author = ({ author }) => (
         width="100px"
         className="align-middle rounded-full"
         src={author.avatar.url}
+        placeholder="blur"
       />
     </div>
     <h3 className="text-white mt-4 mb-4 text-xl font-bold">{author.name}</h3>

@@ -14,6 +14,7 @@ const Footer = () => {
                   alt="BabaCric Logo"
                   width={128}
                   height={27.75}
+                  placeholder="blur"
                 />
               </Link>
             </div>

@@ -71,6 +71,7 @@ const PostDetail = ({ post }) => {
             src={post.featuredImage.url}
             alt=""
             className="object-top h-full w-full object-cover  shadow-lg rounded-t-lg lg:rounded-lg"
+            placeholder="blur"
           />
         </div>
         <div className="px-4 lg:px-0">

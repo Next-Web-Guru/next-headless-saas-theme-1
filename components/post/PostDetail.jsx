@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
-
+import dynamic from "next/dynamic";
 import moment from "moment";
 import ClassesPostBody from "../../styles/post-body.module.css";
-import Image from "next/image";
+
 import { getNWGCustomAdvertisement } from "../../services/api";
+//import Image from "next/image";
+const Image = dynamic(() => import("next/image"));
 
 const PostDetail = ({ data }) => {
   const author = data.author.node;
@@ -114,6 +116,7 @@ const PostDetail = ({ data }) => {
             alt={data.title}
             layout="responsive"
             className="object-top h-full w-full object-cover  shadow-lg rounded-t-lg lg:rounded-lg"
+            placeholder="blur"
           />
         </div>
         <div className="px-4 lg:px-0">
