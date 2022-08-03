@@ -56,7 +56,7 @@ const PostDetail = ({ data }) => {
           break;
 
         case "afterParagraph":
-          let find2 = contentBody.querySelectorAll("h2")[atWhichNumber - 1];
+          let find2 = contentBody.querySelectorAll("p")[atWhichNumber - 1];
           if (find2) {
             let adDiv2 = document.createElement("div");
             adDiv2.innerHTML = adHtml;
