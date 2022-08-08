@@ -13,11 +13,77 @@ const PostDetail = ({ data }) => {
   const date = new Date(data.date);
   const imagePath = data.featuredImage.node.sourceUrl;
   const tags = data.tags.edges;
+  const [twiiterActualData, setTwiiterActualData] = useState([]);
+  const [twitterEmbedIds, setTwitterEmbedIds] = useState([]);
   //const [postData, setPostData] = useState(data.content);
 
   useEffect(() => {
-    FetchAdvertimsnetData();
+    const timeoutID = window.setTimeout(() => {
+      FetchAdvertimsnetData();
+    }, 2000);
+    RemoveAndBackupTwitterData();
   }, []);
+
+  useEffect(() => {
+    const timeoutID = window.setTimeout(() => {
+      AddTwitterDataAfterPageLoad();
+    }, 5000);
+  });
+
+  function RemoveAndBackupTwitterData() {
+    let contentBody = document.querySelector(".contentBody");
+    let findTwitterDom = contentBody.querySelectorAll(".is-provider-twitter");
+
+    //find and store twiiter id
+    let allATags = contentBody.getElementsByTagName("a");
+    var tIds = [];
+    for (var i = 0; i < allATags.length; i++) {
+      if (
+        allATags[i].href.includes("https://twitter.com") &&
+        allATags[i].href.includes("/status/")
+      ) {
+        var regex = new RegExp("twitter.com/.*/status(?:es)?/([^/?]+)");
+        const str = allATags[i].href;
+        let m;
+        m = regex.exec(str);
+
+        tIds.push(m[1]);
+      }
+    }
+
+    setTwitterEmbedIds(tIds);
+
+    //backup twitter actual data
+    let arrEmbedList = [];
+    findTwitterDom.forEach((e, index) => {
+      arrEmbedList[index] = e.innerHTML;
+
+      //remove page load twiiter data to reduce network load
+      e.innerHTML = "";
+    });
+    setTwiiterActualData(arrEmbedList);
+  }
+
+  useEffect(() => {
+    console.log("twiiterActualData", twiiterActualData);
+  }, [twiiterActualData]);
+
+  function AddTwitterDataAfterPageLoad() {
+    let contentBody = document.querySelector(".contentBody");
+
+    let findTwitterDom = contentBody.querySelectorAll(".is-provider-twitter");
+
+    findTwitterDom.forEach((e, index) => {
+      //e.innerHTML = twiiterActualData[index];
+      console.log("twiiterActualData - ", twiiterActualData[index]);
+
+      //let tempId = e.querySelector(".wp-block-embed-twitter");
+      e.innerHTML =
+        '<iframe scrolling="no" frameborder="0" allowtransparency="true" allowfullscreen="true" class="" style="position: static; visibility: visible; width: 451px; height: 613px; display: block; flex-grow: 1;" title="Twitter Tweet" src="https://platform.twitter.com/embed/Tweet.html?dnt=true&embedId=twitter-widget-0&%3D&frame=false&hideCard=false&hideThread=false&id=' +
+        twitterEmbedIds[index] +
+        '&lang=en&theme=light&widgetsVersion=b7df0f50e1ec1%3A1659558317797&width=500px"></iframe>';
+    });
+  }
 
   async function FetchAdvertimsnetData() {
     const NwgCustomAdvertisement = await getNWGCustomAdvertisement();
@@ -71,12 +137,12 @@ const PostDetail = ({ data }) => {
   <svg width="${w}" height="${h}" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <defs>
       <linearGradient id="g">
-        <stop stop-color="#333" offset="20%" />
-        <stop stop-color="#222" offset="50%" />
-        <stop stop-color="#333" offset="70%" />
+        <stop stop-color="#e2e2e2" offset="20%" />
+        <stop stop-color="#f2f2f2" offset="50%" />
+        <stop stop-color="#e2e2e2" offset="70%" />
       </linearGradient>
     </defs>
-    <rect width="${w}" height="${h}" fill="#333" />
+    <rect width="${w}" height="${h}" fill="#e2e2e2" />
     <rect id="r" width="${w}" height="${h}" fill="url(#g)" />
     <animate xlink:href="#r" attributeName="x" from="-${w}" to="${w}" dur="1s" repeatCount="indefinite"  />
   </svg>`;
@@ -85,45 +151,6 @@ const PostDetail = ({ data }) => {
     typeof window === "undefined"
       ? Buffer.from(str).toString("base64")
       : window.btoa(str);
-
-  // const getContentFragment = (index, text, obj, type) => {
-  //   let modifiedText = text;
-
-  //   if (obj) {
-  //     if (obj.bold) {
-  //       modifiedText = (<b key={index}>{text}</b>);
-  //     }
-
-  //     if (obj.italic) {
-  //       modifiedText = (<em key={index}>{text}</em>);
-  //     }
-
-  //     if (obj.underline) {
-  //       modifiedText = (<u key={index}>{text}</u>);
-  //     }
-  //   }
-
-  //   switch (type) {
-  //     case 'heading-three':
-  //       return <h3 key={index} className="text-xl font-semibold mb-4">{modifiedText.map((item, i) => <React.Fragment key={i}>{item}</React.Fragment>)}</h3>;
-  //     case 'paragraph':
-  //       return <p key={index} className="mb-8">{modifiedText.map((item, i) => <React.Fragment key={i}>{item}</React.Fragment>)}</p>;
-  //     case 'heading-four':
-  //       return <h4 key={index} className="text-md font-semibold mb-4">{modifiedText.map((item, i) => <React.Fragment key={i}>{item}</React.Fragment>)}</h4>;
-  //     case 'image':
-  //       return (
-  //         <img
-  //           key={index}
-  //           alt={obj.title}
-  //           height={obj.height}
-  //           width={obj.width}
-  //           src={obj.src}
-  //         />
-  //       );
-  //     default:
-  //       return modifiedText;
-  //   }
-  // };
 
   return (
     <>
