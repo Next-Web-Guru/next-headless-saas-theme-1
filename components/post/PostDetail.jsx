@@ -169,7 +169,7 @@ const PostDetail = ({ data }) => {
             blurDataURL={`data:image/svg+xml;base64,${toBase64(
               convertImage(700, 475)
             )}`}
-            // priority={true}
+            priority={true}
           />
         </div>
         <div className="px-4 lg:px-0">
