@@ -101,6 +101,8 @@ const PostDetail = ({ data }) => {
         adLink +
         '" target="_blank" rel="noopener"><img class="aligncenter wp-image-33459 size-full" src="' +
         adBanner.mediaItemUrl +
+        '" srcSet="' +
+        adBanner.srcSet +
         '" alt="' +
         adName +
         '" width="' +

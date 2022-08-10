@@ -504,6 +504,7 @@ fragment NWGCustomAdvertisementFields on NWGCustomAdvertisement {
         width
       }
     }
+    srcSet
   }
   adLink
   whereToShow
