@@ -61,7 +61,7 @@ export async function getAllPostsWithSlug() {
 export async function getAllPostsWithUri() {
   const data = await fetchAPI(`
     {
-      posts(first: 100) {
+      posts(first: 80) {
         edges {
           node {
             uri
