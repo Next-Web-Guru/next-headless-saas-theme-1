@@ -12,7 +12,7 @@ export default function Home({ allPosts: { edges } }) {
         </title>
         <meta
           name="description"
-          content="Get cricket news, tips and analysis reports that help you to create teams on Fantasy platforms like Dream11, Vision11, Playerzpot etc."
+          content="Get cricket news, tips and analysis reports that help you to create teams on Fantasy platforms like Dream11, Vision11, Playerzpot etc"
         />
 
         <link rel="canonical" href="http://babacric.in/" />
