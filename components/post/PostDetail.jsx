@@ -5,22 +5,20 @@ import ClassesPostBody from "../../styles/post-body.module.css";
 import blurImage from "./blur-min.jpg";
 
 import { getNWGCustomAdvertisement } from "../../services/api";
-//import Image from "next/image";
-const Image = dynamic(() => import("next/image"));
+import Image from "next/image";
+//const Image = dynamic(() => import("next/image"));
 
-const PostDetail = ({ data }) => {
-  const author = data.author.node;
-  const date = new Date(data.date);
-  const imagePath = data.featuredImage.node.sourceUrl;
-  const tags = data.tags.edges;
+const PostDetail = ({ data, postData }) => {
+  const author = postData[0]["_embedded"].author[0];
+  const featuredMedia =
+    postData[0]["_embedded"]["wp:featuredmedia"][0]["media_details"].sizes
+      .medium;
+  //const tags = data.tags.edges;
   const [twiiterActualData, setTwiiterActualData] = useState([]);
   const [twitterEmbedIds, setTwitterEmbedIds] = useState([]);
-  //const [postData, setPostData] = useState(data.content);
+  console.log("postData", postData);
 
   useEffect(() => {
-    const timeoutID = window.setTimeout(() => {
-      FetchAdvertimsnetData();
-    }, 2000);
     RemoveAndBackupTwitterData();
   }, []);
 
@@ -85,56 +83,6 @@ const PostDetail = ({ data }) => {
     });
   }
 
-  async function FetchAdvertimsnetData() {
-    const NwgCustomAdvertisement = await getNWGCustomAdvertisement();
-    console.log("advertisment = ", NwgCustomAdvertisement);
-
-    NwgCustomAdvertisement.allNWGCustomAdvertisement.nodes.map((ad, index) => {
-      const whereToShow = ad.whereToShow[0];
-      const adBanner = ad.adBanner;
-      const adLink = ad.adLink;
-      const adName = ad.adName;
-      const atWhichNumber = ad.atWhichNumber;
-
-      let adHtml =
-        '<p><a href="' +
-        adLink +
-        '" target="_blank" rel="noopener"><img class="aligncenter wp-image-33459 size-full" src="' +
-        adBanner.mediaItemUrl +
-        '" srcSet="' +
-        adBanner.srcSet +
-        '" alt="' +
-        adName +
-        '" width="' +
-        adBanner.mediaDetails.width +
-        '" height="' +
-        adBanner.mediaDetails.height +
-        '" /></a></p>';
-
-      let contentBody = document.querySelector(".contentBody");
-
-      switch (whereToShow) {
-        case "afterHeading2":
-          let find1 = contentBody.querySelectorAll("h2")[atWhichNumber - 1];
-          if (find1) {
-            let adDiv1 = document.createElement("div");
-            adDiv1.innerHTML = adHtml;
-            find1.appendChild(adDiv1);
-          }
-          break;
-
-        case "afterParagraph":
-          let find2 = contentBody.querySelectorAll("p")[atWhichNumber - 1];
-          if (find2) {
-            let adDiv2 = document.createElement("div");
-            adDiv2.innerHTML = adHtml;
-            find2.appendChild(adDiv2);
-          }
-          break;
-      }
-    });
-  }
-
   const convertImage = (w, h) => `
   <svg width="${w}" height="${h}" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <defs>
@@ -159,22 +107,20 @@ const PostDetail = ({ data }) => {
       <div className="bg-white shadow-lg rounded-lg lg:p-8 pb-12 mb-8">
         <div className="relative overflow-hidden shadow-md mb-6">
           <Image
-            width={320}
-            height={180}
-            src={imagePath}
-            alt={data.title}
+            width={featuredMedia["width"]}
+            height={featuredMedia["height"]}
+            src={featuredMedia["source_url"]}
+            alt={postData[0].title.rendered}
             layout="responsive"
             className="object-top h-full w-full object-cover  shadow-lg rounded-t-lg lg:rounded-lg"
             placeholder="blur"
-            //blurDataURL="https://babacricnews.s3.ap-south-1.amazonaws.com/wp-content/uploads/2022/08/03193518/blur-min.jpg"
-            //blurDataURL={blurImage}
             blurDataURL={`data:image/svg+xml;base64,${toBase64(
               convertImage(700, 475)
             )}`}
             priority={true}
           />
         </div>
-        <div className="px-4 lg:px-0">
+        <div className="px-4 lg:px-0 overflow-hidden">
           <div className="flex items-center mb-8 w-full">
             <div className="hidden md:flex items-center justify-center lg:mb-0 lg:w-auto mr-8 items-center">
               <img
@@ -182,7 +128,7 @@ const PostDetail = ({ data }) => {
                 height="30px"
                 width="30px"
                 className="align-middle rounded-full"
-                src={author.avatar.url}
+                src={author.avatar_urls["96"]}
               />
               <p className="inline align-middle text-gray-700 ml-2 font-medium text-lg">
                 {author.name}
@@ -204,14 +150,18 @@ const PostDetail = ({ data }) => {
                 />
               </svg>
               <span className="align-middle">
-                {moment(data.date).format("MMM DD, YYYY")}
+                {moment(postData[0].date).format("MMM DD, YYYY")}
               </span>
             </div>
           </div>
-          <h1 className="mb-8 text-3xl font-semibold">{data.title}</h1>
+          <h1 className="mb-8 text-3xl font-semibold">
+            <div
+              dangerouslySetInnerHTML={{ __html: postData[0].title.rendered }}
+            ></div>
+          </h1>
           <div
-            className={`${ClassesPostBody.content} contentBody break-all`}
-            dangerouslySetInnerHTML={{ __html: data.content }}
+            className={`${ClassesPostBody.content} contentBody break-words`}
+            dangerouslySetInnerHTML={{ __html: postData[0].content.rendered }}
           />
         </div>
       </div>

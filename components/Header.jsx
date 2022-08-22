@@ -21,20 +21,23 @@ import {
   XIcon,
 } from "@heroicons/react/outline";
 
+import getConfig from "next/config";
+const { publicRuntimeConfig } = getConfig();
+
 const Header = () => {
   const [categories, setCategories] = useState([]);
   const [categoriesMobile, setCategoriesMobile] = useState([]);
 
-  useEffect(() => {
-    // getCategories().then((newCategories) => {
-    //   setCategories(newCategories);
-    // });
+  // useEffect(() => {
+  //   // getCategories().then((newCategories) => {
+  //   //   setCategories(newCategories);
+  //   // });
 
-    getHeaderMenuByName(process.env.headerMenuName).then((newCategories) => {
-      setCategories(newCategories.menu.menuItems.edges.reverse());
-      setCategoriesMobile(newCategories.menu.menuItems.edges);
-    });
-  }, []);
+  //   getHeaderMenuByName(process.env.headerMenuName).then((newCategories) => {
+  //     setCategories(newCategories.menu.menuItems.edges.reverse());
+  //     setCategoriesMobile(newCategories.menu.menuItems.edges);
+  //   });
+  // }, []);
 
   return (
     <>
@@ -44,12 +47,10 @@ const Header = () => {
             <Link href="/">
               <span className="cursor-pointer font-bold text-4xl text-white">
                 <Image
-                  src="https://babacricnews.s3.ap-south-1.amazonaws.com/wp-content/uploads/2021/05/07112007/baba-logo-white.png"
+                  src={publicRuntimeConfig.themeConfig.logo.url}
                   alt="BabaCric Logo"
-                  width={128}
-                  height={27.75}
-                  placeholder="blur"
-                  blurDataURL="https://babacricnews.s3.ap-south-1.amazonaws.com/wp-content/uploads/2021/05/07112007/baba-logo-white.png"
+                  width={publicRuntimeConfig.themeConfig.logo.width}
+                  height={publicRuntimeConfig.themeConfig.logo.height}
                 />
               </span>
             </Link>

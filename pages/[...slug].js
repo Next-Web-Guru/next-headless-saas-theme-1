@@ -1,5 +1,6 @@
 //import { VStack } from "@chakra-ui/react";
 import { useRouter } from "next/router";
+import { useEffect } from "react";
 import { Loader } from "../components";
 import PostList from "../components/archives/PostList";
 import PageData from "../components/PageData";
@@ -15,6 +16,7 @@ import {
   getPostDetailsByUri,
   getAllPostsWithUri,
 } from "../services/api";
+import { getPostDetails } from "../services/api-rest";
 
 //export const config = { amp: 'hybrid' }
 
@@ -27,12 +29,11 @@ function OtherPages(props) {
     return <Loader />;
   } else {
     //console.log(props)
-
     const urlType = props.urlType;
     const pageType = props.pageType;
 
     //if found any data
-    if (props.data && props.data) {
+    if (props.postData) {
       //check for category, tag, author
       if (pageType === "archive") {
         componentToShow = (
@@ -49,7 +50,7 @@ function OtherPages(props) {
       } else {
         //it means it is a post
 
-        componentToShow = <Post data={props.data} />;
+        componentToShow = <Post slug={props.slug} postData={props.postData} />;
       }
     } else {
       componentToShow = "<h1>Not Found Page</h1>";
@@ -76,10 +77,12 @@ export async function getStaticProps(context) {
   const { params } = context;
   const { slug } = params;
   const urlType = slug[0];
+  const uriMain = params.slug.join("/");
 
   //get data
   let data;
   let pageType;
+  let postData;
 
   if (urlType === "category" || urlType === "tag" || urlType === "author") {
     let typeName;
@@ -92,19 +95,21 @@ export async function getStaticProps(context) {
     data = await getCateogryRecentPostbyName(typeName, slug[1]);
 
     pageType = "archive";
-  } else if (slug.length == 1) {
-    //it means is is a page
+    // } else if (slug.length == 1) {
+    //   //it means it is a page
 
-    const uri = slug[0];
-    data = await getPageDetailsByUri(uri);
+    //   const uri = slug[0];
+    //   data = await getPageDetailsByUri(uri);
 
-    pageType = "page";
+    //   pageType = "page";
   } else {
     //it means it is a post
     const uri = params.slug.join("/");
     data = await getPostDetailsByUri(uri);
-
     pageType = "post";
+
+    const lastParam = slug[slug.length - 1];
+    postData = await getPostDetails(lastParam);
   }
 
   // menu data
@@ -117,6 +122,8 @@ export async function getStaticProps(context) {
       data: data,
       pageType: pageType,
       slug: slug,
+      uriMain: uriMain,
+      postData: postData,
     },
     revalidate: 20, //20 minutes
   };
@@ -137,9 +144,9 @@ export async function getStaticPaths() {
     "/category/fantasy-platform",
   ];
 
-  const postListUri = allPosts.edges.map(({ node }) => `${node.uri}`);
+  //const postListUri = allPosts.edges.map(({ node }) => `${node.uri}`);
 
-  const allUri = [...mostVisitedUri, ...categoryListUri, ...postListUri];
+  const allUri = [];
 
   return {
     paths: allUri,

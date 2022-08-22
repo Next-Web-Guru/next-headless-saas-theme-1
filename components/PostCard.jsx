@@ -2,52 +2,41 @@ import React from "react";
 import Image from "next/image";
 import moment from "moment";
 import Link from "next/link";
-
 import { grpahCMSImageLoader } from "../util";
+import { getUriFromLink } from "../services/utils";
 
-const PostCard = ({ post }) => (
+import getConfig from "next/config";
+const { publicRuntimeConfig } = getConfig();
+
+const PostCard = ({ post, featuredMedia, author }) => (
   <div className="bg-white shadow-lg rounded-lg p-0 lg:p-8 pb-12 mb-8">
-    {/* <div className="relative shadow-md inline-block w-full h-60 lg:h-80 mb-6">
-      <Image
-        unoptimized
-        loader={grpahCMSImageLoader}
-        alt={post.title}
-        className="shadow-lg rounded-t-lg lg:rounded-lg"
-        layout="fill"
-        src={post.featuredImage.url}
-      />
-    </div> */}
     <div className="relative overflow-hidden shadow-md mb-6">
-      {/* <img src={post.featuredImage.node.sourceUrl} alt={post.title} className="object-top absolute h-80 w-full object-cover  shadow-lg rounded-t-lg lg:rounded-lg" /> */}
-      <Image
-        priority
-        src={post.featuredImage.node.sourceUrl}
-        width={320}
-        height={180}
-        layout="responsive"
-        alt={post.title}
-        className="object-top absolute h-80 w-full object-cover  shadow-lg rounded-t-lg lg:rounded-lg"
-        placeholder="blur"
-        blurDataURL={post.featuredImage.node.sourceUrl}
-      />
+      {featuredMedia["media_details"]?.sizes?.medium["source_url"] ? (
+        <Image
+          priority
+          src={featuredMedia["media_details"].sizes.medium["source_url"]}
+          width={featuredMedia["media_details"].sizes.medium["width"]}
+          height={featuredMedia["media_details"].sizes.medium["height"]}
+          layout="responsive"
+          alt={featuredMedia["alt_text"]}
+          className="object-top absolute h-80 w-full object-cover  shadow-lg rounded-t-lg lg:rounded-lg"
+          placeholder="blur"
+          blurDataURL={
+            featuredMedia["media_details"].sizes.medium["source_url"]
+          }
+        />
+      ) : null}
     </div>
-
     <h1 className="transition duration-700 text-center mb-8 cursor-pointer hover:text-pink-600 text-3xl font-semibold">
-      <Link href={`${post.uri}`}>{post.title}</Link>
+      {/* <Link href={`${post.link}`}> */}
+      <Link href={getUriFromLink(post.link)}>
+        <div dangerouslySetInnerHTML={{ __html: post.title.rendered }}></div>
+      </Link>
     </h1>
     <div className="block lg:flex text-center items-center justify-center mb-8 w-full">
       <div className="flex items-center justify-center mb-4 lg:mb-0 w-full lg:w-auto mr-8 items-center">
-        {/* <Image
-          unoptimized
-          loader={grpahCMSImageLoader}
-          alt={post.author.name}
-          height="30px"
-          width="30px"
-          className="align-middle rounded-full"
-          src={post.author.node.avatar}
-        /> */}
         <p className="inline align-middle text-gray-700 ml-2 font-medium text-lg">
-          {post.author.name}
+          {author.name}
         </p>
       </div>
       <div className="font-medium text-gray-700">
@@ -66,16 +55,20 @@ const PostCard = ({ post }) => (
           />
         </svg>
         <span className="align-middle">
-          {moment(post.createdAt).format("MMM DD, YYYY")}
+          {moment(post.date).format("MMM DD, YYYY")}
         </span>
       </div>
     </div>
-    <div
-      className="text-center text-lg text-gray-700 font-normal px-4 lg:px-20 mb-8 break-all"
-      dangerouslySetInnerHTML={{ __html: post.excerpt }}
-    ></div>
+
+    {publicRuntimeConfig.themeConfig.postCard.showPostExcerpt ? (
+      <div
+        className="text-center text-lg text-gray-700 font-normal px-4 lg:px-20 mb-8 break-words text-clip"
+        dangerouslySetInnerHTML={{ __html: post.excerpt.rendered }}
+      ></div>
+    ) : null}
+
     <div className="text-center" style={{ textAlign: "center" }}>
-      <Link href={`${post.uri}`}>
+      <Link href={getUriFromLink(post.link)}>
         <span className="transition duration-500 ease transform hover:-translate-y-1 inline-block bg-pink-600 text-lg font-medium rounded-full text-white px-8 py-3 cursor-pointer">
           Continue Reading
         </span>
